@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flip Profit Calculator</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    .results {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .results p {
+      margin: 8px 0;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Flip Profit Calculator</h1>
+
+    <label>Cost Basis ($)</label>
+    <input type="number" id="cost" placeholder="Enter cost" />
+
+    <label>Listing Price ($)</label>
+    <input type="number" id="listPrice" placeholder="Enter listing price" />
+
+    <div class="results">
+      <p><strong>eBay Fees:</strong> $<span id="fees">0.00</span></p>
+      <p><strong>Profit:</strong> $<span id="profit">0.00</span></p>
+      <p><strong>Profit Margin:</strong> <span id="margin">0</span>%</p>
+    </div>
+  </div>
+
+  <script>
+    const costInput = document.getElementById("cost");
+    const listInput = document.getElementById("listPrice");
+
+    const feeRate = 0.195; // 19.5%
+
+    function calculate() {
+      const cost = parseFloat(costInput.value) || 0;
+      const list = parseFloat(listInput.value) || 0;
+
+      const fees = list * feeRate;
+      const profit = list - fees - cost;
+      const margin = list > 0 ? ((profit / list) * 100).toFixed(2) : 0;
+
+      document.getElementById("fees").textContent = fees.toFixed(2);
+      document.getElementById("profit").textContent = profit.toFixed(2);
+      document.getElementById("margin").textContent = margin;
+    }
+
+    costInput.addEventListener("input", calculate);
+    listInput.addEventListener("input", calculate);
+  </script>
+</body>
+</html>
