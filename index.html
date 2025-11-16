@@ -56,6 +56,9 @@
   <div class="container">
     <h1>Flip Profit Calculator</h1>
 
+    <label>Quantity Purchased</label>
+    <input type="number" id="qty" placeholder="Enter quantity" />
+
     <label>Cost Basis ($)</label>
     <input type="number" id="cost" placeholder="Enter cost" />
 
@@ -70,17 +73,19 @@
   </div>
 
   <script>
+    const qtyInput = document.getElementById("qty");
     const costInput = document.getElementById("cost");
     const listInput = document.getElementById("listPrice");
 
     const feeRate = 0.195; // 19.5%
 
     function calculate() {
-      const cost = parseFloat(costInput.value) || 0;
+      const qty = parseInt(qtyInput.value) || 1;
+      const cost = (parseFloat(costInput.value) || 0) * qty;
       const list = parseFloat(listInput.value) || 0;
 
       const fees = list * feeRate;
-      const profit = list - fees - cost;
+      const profit = (list * qty) - fees - cost;
       const margin = list > 0 ? ((profit / list) * 100).toFixed(2) : 0;
 
       document.getElementById("fees").textContent = fees.toFixed(2);
@@ -88,6 +93,7 @@
       document.getElementById("margin").textContent = margin;
     }
 
+    qtyInput.addEventListener("input", calculate);
     costInput.addEventListener("input", calculate);
     listInput.addEventListener("input", calculate);
   </script>
