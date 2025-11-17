@@ -86,7 +86,8 @@
 
       const fees = list * feeRate;
       const profit = (list * qty) - fees - cost;
-      const margin = (profit / list * qty) * 100;
+      const revenue = (list * qty) - fees;
+      const margin = list > 0 ? ((profit / revenue) * 100).toFixed(2) : 0;
 
       document.getElementById("fees").textContent = fees.toFixed(2);
       document.getElementById("profit").textContent = profit.toFixed(2);
@@ -99,5 +100,6 @@
   </script>
 </body>
 </html>
+
 
 
