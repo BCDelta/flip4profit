@@ -32,13 +32,19 @@
       display: block;
       margin-bottom: 6px;
     }
-    input {
+    input[type="number"] {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 10px;
       font-size: 16px;
       margin-bottom: 15px;
+    }
+    .checkbox-row {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .results {
       background: #f8fafc;
@@ -65,6 +71,12 @@
     <label>Listing Price ($)</label>
     <input type="number" id="listPrice" placeholder="Enter listing price" />
 
+    <!-- NEW CASH CHECKBOX -->
+    <div class="checkbox-row">
+      <input type="checkbox" id="cashSale" />
+      <label for="cashSale" style="margin:0; font-weight: normal;">Cash Sale (No eBay Fees)</label>
+    </div>
+
     <div class="results">
       <p><strong>eBay Fees:</strong> $<span id="fees">0.00</span></p>
       <p><strong>Profit:</strong> $<span id="profit">0.00</span></p>
@@ -76,6 +88,7 @@
     const qtyInput = document.getElementById("qty");
     const costInput = document.getElementById("cost");
     const listInput = document.getElementById("listPrice");
+    const cashSaleCheckbox = document.getElementById("cashSale");
 
     const feeRate = 0.195; // 19.5%
 
@@ -84,10 +97,13 @@
       const cost = (parseFloat(costInput.value) || 0) * qty;
       const list = parseFloat(listInput.value) || 0;
 
-      const fees = list * feeRate;
-      const profit = (list * qty) - fees - cost;
+      // If cash sale is checked → no fees
+      const fees = cashSaleCheckbox.checked ? 0 : list * feeRate;
+
       const revenue = (list * qty) - fees;
-      const margin = list > 0 ? ((profit / revenue) * 100).toFixed(2) : 0;
+      const profit = revenue - cost;
+
+      const margin = revenue > 0 ? ((profit / revenue) * 100).toFixed(2) : 0;
 
       document.getElementById("fees").textContent = fees.toFixed(2);
       document.getElementById("profit").textContent = profit.toFixed(2);
@@ -97,9 +113,7 @@
     qtyInput.addEventListener("input", calculate);
     costInput.addEventListener("input", calculate);
     listInput.addEventListener("input", calculate);
+    cashSaleCheckbox.addEventListener("change", calculate);
   </script>
 </body>
 </html>
-
-
-
