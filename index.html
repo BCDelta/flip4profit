@@ -79,6 +79,7 @@
 
     <div class="results">
       <p><strong>eBay Fees:</strong> $<span id="fees">0.00</span></p>
+      <p><strong>Total Value:</strong> $<span id="total">0.00</span></p>
       <p><strong>Profit:</strong> $<span id="profit">0.00</span></p>
       <p><strong>Profit Margin:</strong> <span id="margin">0</span>%</p>
     </div>
@@ -98,14 +99,16 @@
       const list = parseFloat(listInput.value) || 0;
 
       // If cash sale is checked → no fees
-      const fees = cashSaleCheckbox.checked ? 0 : list * feeRate;
+      const fees = cashSaleCheckbox.checked ? 0 : (list * feeRate) * qty;
 
-      const revenue = (list * qty) - fees;
+      const total = (list * qty);
+      const revenue = total - fees;
       const profit = revenue - cost;
 
       const margin = revenue > 0 ? ((profit / revenue) * 100).toFixed(2) : 0;
 
       document.getElementById("fees").textContent = fees.toFixed(2);
+      document.getElementById("total").textContent = total.toFixed(2);
       document.getElementById("profit").textContent = profit.toFixed(2);
       document.getElementById("margin").textContent = margin;
     }
